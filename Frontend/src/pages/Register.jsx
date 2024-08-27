@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+import { UserData } from '../context/User';
 
 const Register = () => {
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const [name,setName] = useState("");
+
+    const {registerUser,btnLoading} = UserData();
+    const navigate = useNavigate("/");
   
     function submitHandler(e){
       e.preventDefault();
-      console.log(email,password)
+      registerUser(name,email,password,navigate);
     }
     return (
       <div className='flex items-center justify-center min-h-screen'>
@@ -27,7 +31,7 @@ const Register = () => {
               <label className='block text-sm font-medium mb-1'>Password</label>
               <input value={password} onChange={(e)=>setPassword(e.target.value)} className='auth-input' type="password" placeholder='Password' required/>
               </div>
-              <button className='auth-button'>Register</button>
+              <button disabled={btnLoading} className='auth-button'>{btnLoading?"Please Wait....":"Register"}</button>
               </form>  
               <div className="text-center mt-6">
                 <Link to="/login" className='text-sm text-green-400 hover:text-green-300'>have account?</Link>
