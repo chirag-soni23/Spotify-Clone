@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import userRoutes from './routes/userRoutes.js'
+import songRoutes from './routes/songRoutes.js'
 import {connectDB}from './database/db.js'
 import cookieParser from 'cookie-parser'
 import cloudinary from 'cloudinary'
@@ -18,6 +19,7 @@ app.use(cookieParser());
 
 // routes
 app.use("/api/user",userRoutes);
+app.use("/api/song",songRoutes);
 
 
 const port = process.env.PORT || 3000
