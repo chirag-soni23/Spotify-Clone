@@ -49,6 +49,34 @@ export const addSong = TryCatch(async(req,res)=>{
         album
     })
     res.json({message:"Song Added successfull!"})
+});
 
 
+// Add thumbnail
+export const addThumbnail = TryCatch(async(req,res)=>{
+    if(req.user.role !== "admin") return res.status(403).json({message:"You are not admin"});
+    const file = req.file;
+    const fileUrl = getDataurl(file);
+    const cloud = await cloudinary.v2.uploader.upload(fileUrl.content);
+    await Song.findByIdAndUpdate(req.params.id,{
+        thumbnail:{
+            id:cloud.public_id,
+            url:cloud.secure_url
+        }
+    },{new:true});
+    res.json({message:"Thumbnail added successfull!"})
+});
+
+
+// get all songs
+export const getAllSongs = TryCatch(async(req,res)=>{
+    const songs = await Song.find();
+    res.json(songs);
+});
+
+// getallsongs by album
+export const getAllsongsByAlbum = TryCatch(async(req,res)=>{
+    const albums = await Album.findById(req.params.id);
+    const songs =  await Song.find({abum:req.params.id});
+    res.json({albums,songs})
 })
