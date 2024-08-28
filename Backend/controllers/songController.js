@@ -77,6 +77,6 @@ export const getAllSongs = TryCatch(async(req,res)=>{
 // getallsongs by album
 export const getAllsongsByAlbum = TryCatch(async(req,res)=>{
     const albums = await Album.findById(req.params.id);
-    const songs =  await Song.find({abum:req.params.id});
+    const songs =  await Song.find({album:req.params.id});
     res.json({albums,songs})
 })
