@@ -24,18 +24,18 @@ export const SongProvider = ({children})=>{
     },[]);
 
     // add album
-    async function addAlbum(){
+    async function addAlbum(formData,setTitle,setDescription,setFile){
         setLoading(true);
         try {
             const {data} = await axios.post("/api/song/album/new",formData);
             toast.success(data.message);
             setLoading(false);
+            fetchAlbums();
+            setTitle("");setDescription("");setFile(null)
             
         } catch (error) {
             toast.error(error.response.data.message);
-            setLoading(false);
-
-            
+            setLoading(false);            
         }
 
     }
@@ -51,6 +51,7 @@ export const SongProvider = ({children})=>{
         }
     }
     useEffect(()=>{
+
         fetchAlbums();
     },[]);
     return <songContext.Provider value={{songs,addAlbum,loading,songLoading,albums}}>{children}</songContext.Provider>
