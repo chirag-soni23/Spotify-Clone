@@ -79,4 +79,12 @@ export const getAllsongsByAlbum = TryCatch(async(req,res)=>{
     const albums = await Album.findById(req.params.id);
     const songs =  await Song.find({album:req.params.id});
     res.json({albums,songs})
+});
+
+
+// delete song
+export const deleteSong = TryCatch(async(req,res)=>{
+    const song = await Song.findById(req.params.id);
+    await song.deleteOne();
+    res.json({message:"Song delete successfull!"})
 })
