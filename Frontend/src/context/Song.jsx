@@ -24,14 +24,31 @@ export const SongProvider = ({children})=>{
     },[]);
 
     // add album
-    async function addAlbum(formData,setTitle,setDescription,setFile){
+    async function addAlbum(formData){
         setLoading(true);
         try {
             const {data} = await axios.post("/api/song/album/new",formData);
             toast.success(data.message);
             setLoading(false);
             fetchAlbums();
-            setTitle("");setDescription("");setFile(null)
+       
+            
+        } catch (error) {
+            toast.error(error.response.data.message);
+            setLoading(false);            
+        }
+
+    }
+
+    // add songs
+    async function addSong(formData){
+        setLoading(true);
+        try {
+            const {data} = await axios.post("/api/song/new",formData);
+            toast.success(data.message);
+            setLoading(false);
+            fetchAlbums();
+          
             
         } catch (error) {
             toast.error(error.response.data.message);
@@ -54,7 +71,7 @@ export const SongProvider = ({children})=>{
 
         fetchAlbums();
     },[]);
-    return <songContext.Provider value={{songs,addAlbum,loading,songLoading,albums}}>{children}</songContext.Provider>
+    return <songContext.Provider value={{songs,addAlbum,loading,songLoading,albums , addSong}}>{children}</songContext.Provider>
 }
 
-export const songData = () => useContext(songContext);
+export const songData = () => useContext(songContext); 

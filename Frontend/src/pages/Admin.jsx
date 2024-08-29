@@ -1,21 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { UserData } from '../context/User'
 import { Link, useNavigate } from 'react-router-dom';
 import { songData } from '../context/Song';
 import { MdDelete } from "react-icons/md";
 
-
 const Admin = () => {
   const { user } = UserData();
-  const { albums, songs, addAlbum, addSong,loading } = songData();
+  const { albums, songs, addAlbum, addSong, loading } = songData();
   const navigate = useNavigate();
-  
+
   const [title, setTitle] = useState("");
   const [singer, setSinger] = useState("");
   const [description, setDescription] = useState("");
   const [album, setAlbum] = useState("");
   const [file, setFile] = useState(null);
   const [audioFile, setAudioFile] = useState(null);
+
+  useEffect(() => {
+    if (user && user.role !== "admin") navigate("/");
+  }, [user, navigate]);
 
   const fileChangeHandler = (e) => {
     const file = e.target.files[0];
@@ -42,18 +45,18 @@ const Admin = () => {
   const addSongHandler = (e) => {
     e.preventDefault();
     const formData = new FormData();
+    formData.append("title", title);
     formData.append("singer", singer);
     formData.append("description", description);
     formData.append("album", album);
     formData.append("file", audioFile);
     addSong(formData);
+    setTitle("");
     setSinger("");
     setDescription("");
     setAlbum("");
     setAudioFile(null);
   };
-
-  if (user && user.role !== "admin") return navigate("/");
 
   return (
     <div className='min-h-screen bg-[#212121] text-white p-8'>
@@ -79,6 +82,10 @@ const Admin = () => {
       <h2 className='text-2xl font-bold mb-6 mt-6'>Add Songs</h2>
       <form onSubmit={addSongHandler} className='bg-[#181818] p-6 rounded-lg shadow-lg'>
         <div className="mb-4">
+          <label className='block text-sm font-medium mb-1'>Title</label>
+          <input value={title} className='auth-input' type="text" onChange={(e) => setTitle(e.target.value)} placeholder='Title' required />
+        </div>
+        <div className="mb-4">
           <label className='block text-sm font-medium mb-1'>Singer</label>
           <input value={singer} onChange={(e) => setSinger(e.target.value)} className='auth-input' type="text" placeholder='Singer' required />
         </div>
@@ -96,7 +103,7 @@ const Admin = () => {
           <label className='block text-sm font-medium mb-1'>Audio</label>
           <input onChange={audioFileChangeHandler} className='auth-input' type="file" accept='audio/*' required />
         </div>
-        <button className='auth-button' style={{ width: "100px" }}>Add</button>
+        <button disabled={loading} className='auth-button' style={{ width: "100px" }}>{loading ? "Please wait..." : "Add"}</button>
       </form>
 
       <div className="mt-8">
