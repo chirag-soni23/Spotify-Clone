@@ -130,13 +130,13 @@ const Admin = () => {
         <h2 className='text-2xl font-bold mb-6 mt-6'>Added Songs</h2>
         <div className="flex flex-wrap gap-4">
           {songs && songs.map((song, i) => (
-            <div key={i} className='bg-[#181818] p-4 rounded-lg shadow-md w-64 space-y-2'>
+            <div key={i} className='bg-[#181818] p-4 rounded-lg shadow-md max-w-xs space-y-2'>
               {song.thumbnail ? (
                 <img className='mr-1 h-52 w-full object-cover rounded-lg' src={song.thumbnail.url} alt={song.title} />
               ) : (
                 <div className='flex flex-col justify-center items-center gap-2'>
                   <input onChange={(e) => handleFileChange(e, setThumbnailFile)} type="file" />
-                  <button onClick={() => addThumbnailHandler(song._id)} className='bg-green-500 text-white px-2 py-1 rounded'>Add Thumbnail</button>
+                  <button disabled={loading} onClick={() => addThumbnailHandler(song._id)} className='bg-green-500 text-white px-2 py-1 rounded'>{loading?"Please wait....":"Add Thumbnail"}</button>
                 </div>
               )}
               <h4 className='text-lg font-bold mt-2'>{song.title}</h4>
