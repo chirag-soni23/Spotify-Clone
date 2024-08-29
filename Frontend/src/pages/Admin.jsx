@@ -130,7 +130,7 @@ const Admin = () => {
         <h2 className='text-2xl font-bold mb-6 mt-6'>Added Songs</h2>
         <div className="flex flex-wrap gap-4">
           {songs && songs.map((song, i) => (
-            <div key={i} className='bg-[#181818] p-4 rounded-lg shadow-md max-w-xs space-y-2'>
+            <div key={i} className='bg-[#181818] p-4 rounded-lg shadow-md max-w-xs space-y-2 hover:scale-95 transition-all'>
               {song.thumbnail ? (
                 <img className='mr-1 h-52 w-full object-cover rounded-lg' src={song.thumbnail.url} alt={song.title} />
               ) : (
