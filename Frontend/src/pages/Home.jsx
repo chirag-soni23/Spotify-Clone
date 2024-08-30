@@ -1,10 +1,11 @@
 import React from 'react'
+import Layout from '../components/Layout'
 
 function Home() {
   return (
-    <div className='text-white'>
-      Home
-    </div>
+    <Layout>
+      Homepage
+    </Layout>
   )
 }
 
