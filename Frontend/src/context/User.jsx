@@ -56,10 +56,11 @@ export const UserProvider = ({children})=>{
         try {
             const {data} = await axios.post("/api/user/login",{email,password});
             toast.success(data.message);
+            navigate("/");
+            window.location.reload();
             setUser(data.user);
             setIsAuth(true);
-            setBtnLoading(false);
-            navigate("/");
+            setBtnLoading(true);
             
         } catch (error) {
             toast.error(error.response.data.message);
@@ -67,7 +68,20 @@ export const UserProvider = ({children})=>{
         }
     };
 
-    return <UserContext.Provider value={{registerUser,user,isAuth,btnLoading, loading,loginUser}}>{children}
+
+    // logout
+    async function logout(){
+        try {
+            const {data} = await axios.get("/api/user/logout");
+            window.location.reload();
+            
+        } catch (error) {
+            toast.error(error.response.data.message);
+            setBtnLoading(false);   
+            
+        }
+    }
+    return <UserContext.Provider value={{registerUser,user,isAuth,btnLoading, loading,loginUser,logout}}>{children}
     <Toaster/></UserContext.Provider>
 };
 
