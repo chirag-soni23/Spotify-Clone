@@ -1,12 +1,23 @@
 import React, { useEffect } from 'react';
 import { songData } from '../context/Song';
+import { GrChapterNext } from "react-icons/gr";
+import { GrChapterPrevious } from "react-icons/gr";
+import { FaPlay } from "react-icons/fa";
+import { FaPause } from "react-icons/fa";
+
+
+
 
 function Player() {
-  const { singleSong, fetchsingleSong, selectedSong } = songData();
+  const { singleSong, fetchsingleSong, selectedSong,isPlaying } = songData();
 
   useEffect(() => {
     fetchsingleSong();
   }, [selectedSong]);
+  if(!singleSong || !singleSong.song){
+    return null;
+  }
+
   return (
     <div>
       {singleSong && (
@@ -15,12 +26,27 @@ function Player() {
             <img
               src={singleSong.song.thumbnail ? singleSong.song.thumbnail.url : "https://via.placeholder.com/50"}
               alt={singleSong.song.title || "Song Thumbnail"}
-              className="w-12 h-12"
             />
-            <div className="ml-4">
-              <h3 className="text-lg font-medium">{singleSong.song.title || "Unknown Title"}</h3>
-              <p className="text-sm">{singleSong.song.artist || "Unknown Artist"}</p>
-            </div>
+            
+          <div className="hidden md:block">
+            <p>{singleSong.song.title}</p>
+            <p>{singleSong.song.description && singleSong.song.description}</p>
+          </div>
+          </div>
+          <div className="flex flex-col items-center gap-1 m-auto">{singleSong.song && singleSong.song.audio &&<>
+          {isPlaying ? <audio src={singleSong.song.audio.url} autoPlay/>: <audio src={singleSong.song.audio.url}/>}</>}
+          <div className="w-full flex items-center text-green-400">
+            <input className='progress-bar w-[120px] md:w-[300px]' type="range"min={"0"}max={"100"} />
+          </div>
+          <div className="flex justify-center items-center gap-4">
+            <span className='cursor-pointer'>
+              <GrChapterPrevious/>
+            </span>
+            <button className='bg-white text-black rounded-full p-2'>{isPlaying ? <FaPause/>:<FaPlay/>}</button>
+            <span className='cursor-pointer'>
+              <GrChapterNext/>
+            </span>
+          </div>
           </div>
         </div>
       )}
