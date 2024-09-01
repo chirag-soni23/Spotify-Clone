@@ -4,8 +4,10 @@ import { songData } from '../context/Song'
 import Albumitem from '../components/Albumitem'
 import Songitem from '../components/Songitem';
 
+
 function Home() {
   const {songs,albums} = songData();
+  
   return (
     <Layout>
       <div className='mb-4'>

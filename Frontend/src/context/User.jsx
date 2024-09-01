@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import toast, {Toaster} from 'react-hot-toast';
 import axios from 'axios';
 
@@ -63,8 +63,8 @@ export const UserProvider = ({children})=>{
             setBtnLoading(true);
             
         } catch (error) {
-            toast.error(error.response.data.message);
-            setBtnLoading(false);               
+                toast.error(error.response.data.message);
+                setBtnLoading(false);               
         }
     };
 
@@ -74,14 +74,26 @@ export const UserProvider = ({children})=>{
         try {
             const {data} = await axios.get("/api/user/logout");
             window.location.reload();
+            toast.success(data.message);
+        } catch (error) {
+            toast.error(error.response.data.message);
+            setBtnLoading(false);      
+        }
+    }
+
+    // add to playlist
+    async function addtoPlaylist(id){
+        try {
+            const {data} = await axios.post("/api/user/song/"+id);
+            toast.success(data.message);
+            fetchUser();
             
         } catch (error) {
             toast.error(error.response.data.message);
-            setBtnLoading(false);   
             
         }
     }
-    return <UserContext.Provider value={{registerUser,user,isAuth,btnLoading, loading,loginUser,logout}}>{children}
+    return <UserContext.Provider value={{registerUser,user,isAuth,btnLoading, loading,loginUser,logout,addtoPlaylist}}>{children}
     <Toaster/></UserContext.Provider>
 };
 

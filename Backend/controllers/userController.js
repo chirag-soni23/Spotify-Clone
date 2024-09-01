@@ -47,5 +47,21 @@ export const myProfile = TryCatch(async(req,res)=>{
 // logout
 export const logout = TryCatch(async(req,res)=>{
     res.cookie("token","",{maxAge:0});
-    res.json({message:"User loggedout Successfull!"})
+    res.json({message:"User logged out Successfull!"})
+})
+
+// save songs
+export const saveToPlaylist = TryCatch(async(req,res)=>{
+    const user = await User.findById(req.user._id);
+    if(user.playlist.includes(req.params.id)){
+        const index = user.playlist.indexOf(req.params.id);
+        user.playlist.splice(index,1);
+        await user.save();
+       return res.json({message:"Removed from playlist"})
+    }
+        user.playlist.push(req.params.id);
+        await user.save();
+
+        res.json({message:"added to playlist"});
+
 })
