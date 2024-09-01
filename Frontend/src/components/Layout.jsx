@@ -1,6 +1,7 @@
 import React from 'react'
 import Sidebar from './Sidebar'
 import Navbar from './Navbar'
+import Player from './Player'
 
 const Layout = ({children}) => {
   return (
@@ -12,7 +13,7 @@ const Layout = ({children}) => {
                 {children}
             </div>
         </div>
-              
+        <Player/>  
     </div>
   )
 }

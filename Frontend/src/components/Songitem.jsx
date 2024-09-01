@@ -1,16 +1,18 @@
 import React, { useState,useEffect } from 'react'
 import { FaBookmark, FaPlay, FaRegBookmark } from 'react-icons/fa'
 import { UserData } from '../context/User';
+import { songData } from '../context/Song';
 
 const Songitem = ({image,name,description,id}) => {
   const [save,setSave] = useState(false);
   const {addtoPlaylist,user} = UserData();
+  const {setSelectedSong,isPlaying,setIsplaying} = songData();
   const playList = user.playlist;
   useEffect(()=>{
     if(playList && playList.includes(id)){
       setSave(true);
     }
-  },[user]) 
+  },[user]);
   const savePlaylistHandler = () =>{
     setSave(!save);
     addtoPlaylist(id);
@@ -20,7 +22,10 @@ const Songitem = ({image,name,description,id}) => {
       <div className="relative group">
       <img src={image} className='rounded w-[160px]' alt="" />
       <div className="gap-2 flex">
-        <button className='absolute bottom-2 right-14 bg-green-500 text-black p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300'><FaPlay/></button>
+        <button onClick={()=>{
+          setSelectedSong(id);
+          setIsplaying(true)
+        }} className='absolute bottom-2 right-14 bg-green-500 text-black p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300'><FaPlay/></button>
         <button onClick={savePlaylistHandler} className='absolute bottom-2 right-2 bg-green-500 text-black p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300'>{save?<FaBookmark/> : <FaRegBookmark/>}</button>
       </div>
       </div>

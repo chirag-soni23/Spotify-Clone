@@ -8,12 +8,17 @@ export const SongProvider = ({children})=>{
     const [songs,setSongs] = useState([]);
     const [loading,setLoading] = useState(false);
     const [songLoading,setSongLoading] = useState(true);
+    const [selectedSong,setSelectedSong] = useState(null);
+    const [isPlaying,setIsplaying] = useState(false);
+
 
     // fetch songs
     async function fetchSongs(){
         try {
             const {data} = await axios.get("/api/song/all") 
-            setSongs(data);          
+            setSongs(data); 
+            setSelectedSong(data[0]._id);
+            setIsplaying(false);         
         } catch (error) {
             console.log(error);
             
@@ -23,6 +28,18 @@ export const SongProvider = ({children})=>{
         fetchSongs();
     },[]);
 
+    const [singleSong,setsingleSong] = useState([]);
+    // get single song
+    async function fetchsingleSong(){
+        try {
+            const {data} = await axios.get("/api/song/single/"+selectedSong);
+            setsingleSong(data);
+            
+        } catch (error) {
+            console.log(error)
+            
+        }
+    }
     // add album
     async function addAlbum(formData){
         setLoading(true);
@@ -102,7 +119,7 @@ export const SongProvider = ({children})=>{
         setLoading(false);        
     }
   }
-    return <songContext.Provider value={{songs,addAlbum,loading,songLoading,albums , addSong,Addthumbnail,deleteSong}}>{children}</songContext.Provider>
+    return <songContext.Provider value={{songs,addAlbum,loading,songLoading,albums , addSong,Addthumbnail,deleteSong,fetchsingleSong,singleSong,setSelectedSong,isPlaying,setIsplaying,selectedSong}}>{children}</songContext.Provider>
 }
 
 export const songData = () => useContext(songContext); 

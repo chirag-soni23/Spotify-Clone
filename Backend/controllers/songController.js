@@ -88,3 +88,9 @@ export const deleteSong = TryCatch(async(req,res)=>{
     await song.deleteOne();
     res.json({message:"Song delete successfull!"})
 })
+
+// getsingle song
+export const getSingleLoading = TryCatch(async(req,res)=>{
+    const song = await Song.findById(req.params.id);
+    res.json({song});
+})
