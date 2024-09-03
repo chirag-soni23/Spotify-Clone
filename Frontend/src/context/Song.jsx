@@ -4,122 +4,142 @@ import toast from "react-hot-toast";
 
 const songContext = createContext();
 
-export const SongProvider = ({children})=>{
-    const [songs,setSongs] = useState([]);
-    const [loading,setLoading] = useState(false);
-    const [songLoading,setSongLoading] = useState(true);
-    const [selectedSong,setSelectedSong] = useState(null);
-    const [isPlaying,setIsplaying] = useState(false);
+export const SongProvider = ({ children }) => {
+    const [songs, setSongs] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [songLoading, setSongLoading] = useState(true);
+    const [selectedSong, setSelectedSong] = useState(null);
+    const [isPlaying, setIsplaying] = useState(false);
 
 
     // fetch songs
-    async function fetchSongs(){
+    async function fetchSongs() {
         try {
-            const {data} = await axios.get("/api/song/all") 
-            setSongs(data); 
+            const { data } = await axios.get("/api/song/all")
+            setSongs(data);
             setSelectedSong(data[0]._id);
-            setIsplaying(false);         
+            setIsplaying(false);
         } catch (error) {
             console.log(error);
-            
+
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
         fetchSongs();
-    },[]);
+    }, []);
 
-    const [singleSong,setsingleSong] = useState([]);
+    const [singleSong, setsingleSong] = useState([]);
     // get single song
-    async function fetchsingleSong(){
+    async function fetchsingleSong() {
         try {
-            const {data} = await axios.get("/api/song/single/"+selectedSong);
+            const { data } = await axios.get("/api/song/single/" + selectedSong);
             setsingleSong(data);
-            
+
         } catch (error) {
             console.log(error)
-            
+
         }
     }
     // add album
-    async function addAlbum(formData){
+    async function addAlbum(formData) {
         setLoading(true);
         try {
-            const {data} = await axios.post("/api/song/album/new",formData);
+            const { data } = await axios.post("/api/song/album/new", formData);
             toast.success(data.message);
             setLoading(false);
             fetchAlbums();
-       
-            
+
+
         } catch (error) {
             toast.error(error.response.data.message);
-            setLoading(false);            
+            setLoading(false);
         }
 
     }
 
     // add songs
-    async function addSong(formData){
+    async function addSong(formData) {
         setLoading(true);
         try {
-            const {data} = await axios.post("/api/song/new",formData);
+            const { data } = await axios.post("/api/song/new", formData);
             toast.success(data.message);
             setLoading(false);
             fetchSongs()
-          
-            
+
+
         } catch (error) {
             toast.error(error.response.data.message);
-            setLoading(false);            
+            setLoading(false);
         }
 
     }
 
     // Addthumbnail
-    async function Addthumbnail(id,formData,setFile){
+    async function Addthumbnail(id, formData, setFile) {
         setLoading(true);
         try {
-            const {data} = await axios.post("/api/song/"+id,formData)          
+            const { data } = await axios.post("/api/song/" + id, formData)
             toast.success(data.message);
             setFile(null)
             setLoading(false);
             fetchSongs();
-          
-            
+
+
         } catch (error) {
             toast.error(error.response.data.message);
-            setLoading(false);            
+            setLoading(false);
         }
 
     }
-    const [albums,setAlbums] = useState([]);
+    const [albums, setAlbums] = useState([]);
     // fetch album
-    async function fetchAlbums(){
+    async function fetchAlbums() {
         try {
-            const {data} = await axios.get("/api/song/album/all") 
-            setAlbums(data);          
+            const { data } = await axios.get("/api/song/album/all")
+            setAlbums(data);
         } catch (error) {
             console.log(error);
-            
+
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
 
         fetchAlbums();
-    },[]);
+    }, []);
 
     // Delete songs
-  async function deleteSong(id){
-    try {
-        const {data} = await axios.delete("/api/song/delete/"+id);
-        toast.success(data.message);
-        fetchSongs();
-      
-    } catch (error) {
-        toast.error(error.response.data.message);
-        setLoading(false);        
+    async function deleteSong(id) {
+        try {
+            const { data } = await axios.delete("/api/song/delete/" + id);
+            toast.success(data.message);
+            fetchSongs();
+
+        } catch (error) {
+            toast.error(error.response.data.message);
+            setLoading(false);
+        }
     }
-  }
-    return <songContext.Provider value={{songs,addAlbum,loading,songLoading,albums , addSong,Addthumbnail,deleteSong,fetchsingleSong,singleSong,setSelectedSong,isPlaying,setIsplaying,selectedSong}}>{children}</songContext.Provider>
+    const [index, setIndex] = useState(0);
+    function nextMusic() {
+        if (index == songs.length - 1) {
+            setIndex(0);
+            setSelectedSong(songs[0]._id)
+        }
+        else {
+            setIndex(index + 1);
+            setSelectedSong(songs[index + 1]._id);
+        }
+    }
+    function prevMusic() {
+        if (index == 0) {
+            return null;
+        }
+        else {
+            setIndex(index - 1);
+            setSelectedSong(songs[index - 1]._id);
+        }
+    }
+    return <songContext.Provider value={{ songs, addAlbum, loading, songLoading, albums, addSong, Addthumbnail, deleteSong, fetchsingleSong, singleSong, setSelectedSong, isPlaying, setIsplaying, selectedSong, nextMusic, prevMusic }}>{children}</songContext.Provider>
 }
 
 export const songData = () => useContext(songContext); 
