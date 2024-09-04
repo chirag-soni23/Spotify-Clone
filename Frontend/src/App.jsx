@@ -16,7 +16,7 @@ function App() {
     <BrowserRouter>
     <Routes>
       <Route path='/' element={isAuth?<Home/>:<Login/>}/>
-      <Route path='/playlist' element={isAuth?<Playlist/>:<Login/>}/>
+      <Route path='/playlist' element={isAuth?<Playlist user={user}/>:<Login/>}/>
       <Route path='/admin' element={isAuth?<Admin/>:<Login/>}/>
       <Route path='/register' element={isAuth?<Home/>:<Register/>}/>
       <Route path='/login' element={isAuth?<Home/>:<Login/>}>

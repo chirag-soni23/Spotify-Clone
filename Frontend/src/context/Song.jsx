@@ -27,6 +27,7 @@ export const SongProvider = ({ children }) => {
     useEffect(() => {
         fetchSongs();
     }, []);
+    
 
     const [singleSong, setsingleSong] = useState([]);
     // get single song
