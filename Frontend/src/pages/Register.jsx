@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import { UserData } from '../context/User';
+import { songData } from '../context/Song';
 
 const Register = () => {
     const [email,setEmail] = useState("");
@@ -9,10 +10,10 @@ const Register = () => {
 
     const {registerUser,btnLoading} = UserData();
     const navigate = useNavigate("/");
-  
+    const {fetchSongs,fetchAlbums } = songData();
     function submitHandler(e){
       e.preventDefault();
-      registerUser(name,email,password,navigate);
+      registerUser(name,email,password,navigate,fetchSongs,fetchAlbums);
     }
     return (
       <div className='flex items-center justify-center min-h-screen'>

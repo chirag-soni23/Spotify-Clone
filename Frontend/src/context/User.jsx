@@ -13,7 +13,7 @@ export const UserProvider = ({children})=>{
   
 
     // Register User
-    async function registerUser(name,email,password,navigate){
+    async function registerUser(name,email,password,navigate,fetchSongs,fetchAlbums ){
         setBtnLoading(true)
         try {
             const {data} = await axios.post("/api/user/register",{name,email,password});
@@ -22,6 +22,9 @@ export const UserProvider = ({children})=>{
             setIsAuth(true);
             setBtnLoading(false);
             navigate("/");
+            fetchSongs();
+            fetchAlbums();
+            
             
         } catch (error) {
             toast.error(error.response.data.message);
@@ -51,7 +54,7 @@ export const UserProvider = ({children})=>{
     },[]);
 
     // login User
-    async function loginUser(email,password,navigate){
+    async function loginUser(email,password,navigate,fetchSongs,fetchAlbums ){
         setBtnLoading(true)
         try {
             const {data} = await axios.post("/api/user/login",{email,password});
@@ -61,6 +64,8 @@ export const UserProvider = ({children})=>{
             setUser(data.user);
             setIsAuth(true);
             setBtnLoading(true);
+            fetchSongs();
+            fetchAlbums();
             
         } catch (error) {
                 toast.error(error.response.data.message);

@@ -27,7 +27,7 @@ export const SongProvider = ({ children }) => {
     useEffect(() => {
         fetchSongs();
     }, []);
-    
+
 
     const [singleSong, setsingleSong] = useState([]);
     // get single song
@@ -140,7 +140,24 @@ export const SongProvider = ({ children }) => {
             setSelectedSong(songs[index - 1]._id);
         }
     }
-    return <songContext.Provider value={{ songs, addAlbum, loading, songLoading, albums, addSong, Addthumbnail, deleteSong, fetchsingleSong, singleSong, setSelectedSong, isPlaying, setIsplaying, selectedSong, nextMusic, prevMusic }}>{children}</songContext.Provider>
+
+
+    // fetch album song
+    const [albumSong, setAlbumSong] = useState([]);
+    const [albumData,setAlbumData] = useState([]);
+    async function fetchAlbumSong(id) {
+        try {
+            const { data } = await axios.get("/api/song/album/" +id);
+            setAlbumSong(data.songs)
+            setAlbumData(data.albums)
+
+        } catch (error) {
+            console.log(error)
+
+        }
+
+    }
+    return <songContext.Provider value={{ songs, addAlbum, loading, songLoading, albums, addSong, Addthumbnail, deleteSong, fetchsingleSong, singleSong, setSelectedSong, isPlaying, setIsplaying, selectedSong, nextMusic, prevMusic,fetchAlbumSong,albumSong,albumData,fetchSongs,fetchAlbums }}>{children}</songContext.Provider>
 }
 
 export const songData = () => useContext(songContext); 

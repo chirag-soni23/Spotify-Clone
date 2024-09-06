@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import { UserData } from '../context/User';
+import { songData } from '../context/Song';
 
 const Login = () => {
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
 
   const {loginUser,btnLoading} = UserData();
+  const {fetchSongs,fetchAlbums } = songData();
 
   const navigate = useNavigate("/");
 
   function submitHandler(e){
     e.preventDefault();
-    loginUser(email,password,navigate);
+    loginUser(email,password,navigate,fetchSongs,fetchAlbums );
   }
   return (
     <div className='flex items-center justify-center min-h-screen'>
