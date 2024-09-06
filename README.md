@@ -13,7 +13,7 @@
 
 - 📫 How to reach me **csoni0693@gmail.com**
 
-- ⚡ Fun fact **⚡ Fun fact: I can debug code faster than I can decide what to eat! 😄**
+- ⚡ Fun fact **⚡ I can debug code faster than I can decide what to eat! 😄**
 
 <h3 align="left">Connect with me:</h3>
 <p align="left">
