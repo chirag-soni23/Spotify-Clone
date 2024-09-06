@@ -25,7 +25,7 @@ const Album = () => {
     return (
         <Layout>{albumData && (
       <>
-        <div className="mt-10 px-4 flex gap-8 flex-col md:flex-row md:items-center">
+        <div className="mt-10 flex gap-8 flex-col md:flex-row md:items-center">
             {albumData.thumbnail && <img src={albumData.thumbnail.url} className='w-48 rounded' />}
             <div className="flex flex-col">
                 <p>Playlist</p>
