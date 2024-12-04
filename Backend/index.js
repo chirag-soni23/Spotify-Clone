@@ -18,6 +18,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
+app.get('/',(req,res)=>{
+    res.send("Hello")
+})
 app.use("/api/user",userRoutes);
 app.use("/api/song",songRoutes);
 
