@@ -5,6 +5,7 @@ import songRoutes from './routes/songRoutes.js'
 import {connectDB}from './database/db.js'
 import cookieParser from 'cookie-parser'
 import cloudinary from 'cloudinary'
+import path from 'path'
 dotenv.config();
 cloudinary.v2.config({
     cloud_name:process.env.CLOUD_NAME,
@@ -18,11 +19,14 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
-app.get('/',(req,res)=>{
-    res.send("Hello")
-})
 app.use("/api/user",userRoutes);
 app.use("/api/song",songRoutes);
+
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname,"/Frontend/dist")))
+app.get("*",(req,res)=>{
+    res.sendFile(path.join(__dirname,"Frontend","dist","index.html"))
+})
 
 
 const port = process.env.PORT || 3000
