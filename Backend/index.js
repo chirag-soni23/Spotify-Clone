@@ -2,15 +2,15 @@ import express from 'express'
 import dotenv from 'dotenv'
 import userRoutes from './routes/userRoutes.js'
 import songRoutes from './routes/songRoutes.js'
-import {connectDB}from './database/db.js'
+import { connectDB } from './database/db.js'
 import cookieParser from 'cookie-parser'
 import cloudinary from 'cloudinary'
 import path from 'path'
 dotenv.config();
 cloudinary.v2.config({
-    cloud_name:process.env.CLOUD_NAME,
-    api_key:process.env.API_KEY,
-    api_secret:process.env.API_SECRET
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
 });
 const app = express();
 
@@ -19,18 +19,18 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
-app.use("/api/user",userRoutes);
-app.use("/api/song",songRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/song", songRoutes);
 
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname,"/Frontend/dist")))
-app.get("*",(req,res)=>{
-    res.sendFile(path.join(__dirname,"Frontend","dist","index.html"))
+app.use(express.static(path.join(__dirname, "/Frontend/dist")))
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "Frontend", "dist", "index.html"))
 })
 
 
 const port = process.env.PORT || 3000
-app.listen(port,()=>{
+app.listen(port, () => {
     console.log(`http://localhost:${port}`);
     connectDB();
 });
